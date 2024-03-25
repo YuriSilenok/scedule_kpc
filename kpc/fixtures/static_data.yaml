@@ -1,0 +1,9 @@
+- model: kpc.LessonStatus
+  pk: 1
+  fields:
+    name: 'Предложено'
+
+- model: kpc.LessonStatus
+  pk: 2
+  fields:
+    name: 'Утверждено'

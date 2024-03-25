@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div style="text-align: center;">
+    <button onclick="openTab(event, 'By Groups')">By Groups</button>
+    <button onclick="openTab(event, 'By Auditoriums')">By Auditoriums</button>
+    <button onclick="openTab(event, 'By Teachers')">By Teachers</button>
+</div>
+<div class="tab" id="By Groups">
+    <label for="group-dropdown">Select a Group:</label>
+    <select name="group-dropdown" id="group-dropdown">
+        <option value="">Select a Group</option>
+        <!-- Populate dropdown with Group names -->
+        {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="tab" id="By Auditoriums">
+    <label for="auditorium-filter">Select Auditorium:</label>
+    <select id="auditorium-filter">
+        <option value="">All Auditoriums</option>
+        <!-- Populate dropdown with Auditorium names -->
+        {% for auditorium in auditoriums %}
+            <option value="{{ auditorium.id }}">{{ auditorium.name }}</option>
+        {% endfor %}
+    </select></div>
+<div class="tab" id="By Teachers">
+    <label for="teacher-filter">Filter by Teacher:</label>
+    <select name="teacher_filter" id="teacher-filter">
+        <option value="">All Teachers</option>
+        <!-- Populate dropdown with Teacher usernames -->
+        {% for teacher in teachers %}
+            <option value="{{ teacher.id }}">{{ teacher.user.username }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<table id="schedule-table" style="display: none;">
+    <!-- Table content will be populated dynamically -->
+</table>
+
+<script>
+    function openTab(event, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }
+    document.getElementById("group-dropdown").addEventListener("change", function() {
+        var selectedGroupId = this.value;
+        if (selectedGroupId) {
+            // Perform AJAX request to fetch schedule data for the selected group
+            // Update the 'schedule-table' content with the fetched schedule data
+            var scheduleTable = document.getElementById("schedule-table");
+            // Example: scheduleTable.innerHTML = "<tr><th>Day</th><th>Time</th><th>Subject</th></tr><tr><td>Monday</td><td>9:00 AM</td><td>Math</td></tr>";
+
+            // Sample code to populate the table with JSON data
+            var jsonData = [
+                {
+                    "id": 3,
+                    "date": "2024-04-01",
+                    "discipline": 4,
+                    "teacher": 3,
+                    "auditorium": 5,
+                    "group": 2,
+                    "para": 2,
+                    "lesson_status": 3
+                },
+                {
+                    "id": 10,
+                    "date": "2024-04-06",
+                    "discipline": 3,
+                    "teacher": 5,
+                    "auditorium": 3,
+                    "group": 2,
+                    "para": 4,
+                    "lesson_status": 3
+                }
+            ];
+
+            var tableContent = "<tr><th>ID</th><th>Date</th><th>Discipline</th><th>Teacher</th><th>Auditorium</th><th>Para</th><th>Lesson Status</th></tr>";
+            jsonData.forEach(function(entry) {
+                tableContent += "<tr>";
+                tableContent += "<td>" + entry.id + "</td>";
+                tableContent += "<td>" + entry.date + "</td>";
+                tableContent += "<td>" + entry.discipline + "</td>";
+                tableContent += "<td>" + entry.teacher + "</td>";
+                tableContent += "<td>" + entry.auditorium + "</td>";
+                tableContent += "<td>" + entry.para + "</td>";
+                tableContent += "<td>" + entry.lesson_status + "</td>";
+                tableContent += "</tr>";
+            });
+
+            scheduleTable.innerHTML = tableContent;
+            scheduleTable.style.display = "block";
+        } else {
+            document.getElementById("schedule-table").style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>

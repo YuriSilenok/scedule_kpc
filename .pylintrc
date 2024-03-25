@@ -1,0 +1,2 @@
+[TYPECHECK]
+ignored-classes=Teacher, Discipline, Auditorium, Group, Pair, LessonStatus, Lesson
